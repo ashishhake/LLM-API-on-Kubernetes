@@ -1,12 +1,14 @@
 from fastapi import FastAPI
 from transformers import pipeline
 from pydantic import BaseModel
+from prometheus_fastapi_instrumentator import Instrumentator
 
 # 1. Tell FastAPI what the incoming JSON looks like
 class GenerateRequest(BaseModel):
     prompt: str
 
 app = FastAPI()
+Instrumentator().instrument(app).expose(app)
 
 # 2. Load the AI model when the app starts 
 # (Renamed to 'generator' to avoid overwriting the import)
